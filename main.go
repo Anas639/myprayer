@@ -12,6 +12,9 @@ import (
 )
 
 const ddMMYYYY = "02-01-2006"
+const MAJOR_VERSION = 0
+const MINOR_VERSION = 1
+const PATCH = 2
 
 var geoLocalisation = network.NewClient("https://nominatim.openstreetmap.org")
 var aladhan = network.NewClient("http://api.aladhan.com/v1")
@@ -24,8 +27,15 @@ func main() {
 	flag.StringVar(&city, "c", "", "Your location")
 	flag.StringVar(&date, "date", "", "Set prayer date")
 	flag.StringVar(&date, "d", "", "Set prayer date")
+	vFlag := flag.Bool("v", false, "Print version")
+	versionFlag := flag.Bool("version", false, "Print version")
 
 	flag.Parse()
+
+	if *vFlag || *versionFlag {
+		fmt.Printf("PrayerTime CLI: v%d.%d.%d\n", MAJOR_VERSION, MINOR_VERSION, PATCH)
+		return
+	}
 
 	command := flag.Arg(0)
 
@@ -45,7 +55,6 @@ func main() {
 		fmt.Printf("%s\n", latLng.DisplayName)
 		fmt.Println("************************")
 		fmt.Printf("%s until salat Al-%s📿🕌\n", nextPrayer.TimeLeft.Round(time.Second), nextPrayer.Name)
-		break
 	default:
 		timings, err := GetPrayerTimings(date, latLng)
 

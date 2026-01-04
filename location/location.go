@@ -29,7 +29,7 @@ func GetLocationFromCity(client *network.HttpClient, city string) (*LatLng, erro
 
 	defer res.Body.Close()
 	if res.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("Unsuccessful response %d\n", res.StatusCode)
+		return nil, fmt.Errorf("\n%s:\nUnsuccessful response %d", res.Request.URL, res.StatusCode)
 	}
 
 	bytes, err := io.ReadAll(res.Body)
